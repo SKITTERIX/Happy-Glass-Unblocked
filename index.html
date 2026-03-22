@@ -110,20 +110,39 @@
 
     <script src="Build/game.loader.js"></script>
     <script>
-      const canvas = document.querySelector("#unity-canvas");
+  // 1. Identify the elements we created in the HTML
+  const canvas = document.querySelector("#unity-canvas");
+  const progressBar = document.querySelector("#loading-bar-fill");
+  const progressText = document.querySelector("#loading-text");
+  const loadingOverlay = document.querySelector("#loading-overlay");
 
-      createUnityInstance(canvas, {
-        dataUrl: "Build/game.data.unityweb",
-        frameworkUrl: "Build/game.framework.js.unityweb",
-        codeUrl: "Build/game.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "NimmiDevelopers",
-        productName: "Happy Glass Draw Lines",
-        productVersion: "1.0",
-        // Improve performance on mobile high-DPI screens
-        devicePixelRatio: Math.min(window.devicePixelRatio, 2), 
-      });
-    </script>
+  // 2. Call the Unity Instance with the progress function added
+  createUnityInstance(canvas, {
+    dataUrl: "Build/game.data.unityweb",
+    frameworkUrl: "Build/game.framework.js.unityweb",
+    codeUrl: "Build/game.wasm.unityweb",
+    streamingAssetsUrl: "StreamingAssets",
+    companyName: "NimmiDevelopers",
+    productName: "Happy Glass Draw Lines",
+    productVersion: "1.0",
+    devicePixelRatio: Math.min(window.devicePixelRatio, 2), 
+  }, (progress) => {
+    // === THIS IS THE UPDATED PROGRESS PART ===
+    const percent = Math.round(progress * 100);
+    progressBar.style.width = percent + "%";
+    progressText.innerHTML = "Loading Game... " + percent + "%";
+    // =========================================
+  }).then((unityInstance) => {
+    // === THIS PART HIDES THE LOGO WHEN DONE ===
+    loadingOverlay.style.opacity = "0";
+    setTimeout(() => {
+      loadingOverlay.style.display = "none";
+    }, 500);
+    // =========================================
+  }).catch((message) => {
+    alert(message);
+  });
+</script>
     function openFullscreen() {
   const container = document.querySelector("#unity-container");
   
