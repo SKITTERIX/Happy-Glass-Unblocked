@@ -36,6 +36,28 @@
     </style>
   </head>
   <body>
+    <button id="fullscreen-button" onclick="openFullscreen();">⛶ Fullscreen</button>
+
+<style>
+  #fullscreen-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 100;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #231F20;
+    transition: background 0.2s;
+  }
+  #fullscreen-button:hover {
+    background: #fff;
+  }
+</style>
     <div id="unity-container">
       <canvas id="unity-canvas" background: #231F20"></canvas>
     </div>
@@ -56,5 +78,26 @@
         devicePixelRatio: Math.min(window.devicePixelRatio, 2), 
       });
     </script>
+    function openFullscreen() {
+  const container = document.querySelector("#unity-container");
+  
+  if (container.requestFullscreen) {
+    container.requestFullscreen();
+  } else if (container.webkitRequestFullscreen) { /* Safari */
+    container.webkitRequestFullscreen();
+  } else if (container.msRequestFullscreen) { /* IE11 */
+    container.msRequestFullscreen();
+  }
+}
+
+// Optional: Hide the button when already in fullscreen
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('fullscreen-button');
+  if (document.fullscreenElement) {
+    btn.style.visibility = 'hidden';
+  } else {
+    btn.style.visibility = 'visible';
+  }
+});
   </body>
 </html>
