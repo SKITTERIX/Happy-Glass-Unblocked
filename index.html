@@ -151,6 +151,22 @@
   }).catch((message) => {
     alert(message);
   });
+      window.addEventListener('message', (event) => {
+    // 1. Security Check: Only accept messages from your Neocities site
+    if (event.origin !== "https://coffee-arcade.neocities.org") {
+        return; 
+    }
+
+    // 2. Handle the data
+    if (event.data.type === 'GAME_DATA') {
+        console.log("Activity received from game:", event.data.action);
+        console.log("Details:", event.data.data);
+
+        // Optional: If you have Google Analytics (gtag) installed, 
+        // you can send the event to your dashboard here:
+        // gtag('event', event.data.action, { 'event_category': 'gameplay' });
+    }
+});
 </script>
     
     function openFullscreen() {
